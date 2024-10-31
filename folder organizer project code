@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Define the directory to monitor
+WATCH_FOLDER=~/Pictures/images
+
+# Start monitoring for new files in WATCH_FOLDER
+inotifywait -m -r "$WATCH_FOLDER" -e create |
+while read path action file; do
+  case "$file" in
+    animal*)
+      mv "$WATCH_FOLDER/$file" "$WATCH_FOLDER/animal_folder/"
+      echo "Moved $file to animal_folder"
+      ;;
+    icecream*)
+      mv "$WATCH_FOLDER/$file" "$WATCH_FOLDER/icecream_folder/"
+      echo "Moved $file to icecream_folder"
+      ;;
+    travel*)
+      mv "$WATCH_FOLDER/$file" "$WATCH_FOLDER/travel_folder/"
+      echo "Moved $file to travel_folder"
+      ;;
+    sports*)
+      mv "$WATCH_FOLDER/$file" "$WATCH_FOLDER/sports_folder/"
+      echo "Moved $file to sports_folder"
+      ;;
+    *)
+      echo "$file does not match any category. Left in $WATCH_FOLDER"
+      ;;
+  esac
+  # Optional if statement for demonstration
+  if [[ -e "$WATCH_FOLDER/$file" ]]; then
+    echo "$file still exists in $WATCH_FOLDER"
+  fi
+done
